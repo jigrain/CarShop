@@ -6,7 +6,8 @@ if(empty($_SESSION['userid'])){
 header("location: /Login_form.php");
 }
 
-include 'Core\User\UserInfo.php'
+include 'Core\User\UserInfo.php';
+include 'Core\User\FindChatMessage.php';
 ?>
 <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
@@ -24,9 +25,10 @@ include 'Core\User\UserInfo.php'
 <div class="wrapper">
     <div class="left">
         <img src="<?php echo$userInfo['Avatar'];?>" width="128px" height="128px">
-         <button id="myBtn" >Load avatar img</button>
+        <?php if($_SESSION['userid']==$_GET["User"]){?>
+         <button id="myBtn" class="button">Load avatar img</button>
+        <?php } ?>
         <h4><?php echo $userInfo['fullname'];?></h4>
-        <p><?php echo$_SESSION['user_type'];?></p>
     </div>
     <div class="right">
         <div class="info">
@@ -49,43 +51,62 @@ include 'Core\User\UserInfo.php'
                 <p><?php echo $userInfo['location'];?></p>
             </div>
             <div class="data buttonDiv">
+                <?php if($_SESSION['userid']==$_GET["User"]){?>
                 <button class="button">Edit profile</button>
                 <button class="button">Edit password</button>
+                <?php } ?>
             </div>
-        </div>
 
-
-
-
-        <script type="text/javascript" src="JS/Userpage.js">
-
-        </script>
-
-        <div class="tab">
-            <button class="tablinks active" onclick="openCity(event, 'MyAdverts')">My adverts</button>
-            <button class="tablinks" onclick="openCity(event, 'MyChats')">My chats</button>
-            <button class="tablinks" onclick="openCity(event, 'Follow')">Follow </button>
-        </div>
-
-        <!-- Tab content -->
-        <div id="MyAdverts" class="tabcontent" style= "display: block;">
-            <h3>My adverts:</h3>
-            <p>London is the capital city of England.</p>
-        </div>
-
-        <div id="MyChats" class="tabcontent">
-            <h3>My Chats:</h3>
-            <p>Paris is the capital of France.</p>
-        </div>
-
-        <div id="Follow" class="tabcontent">
-            <h3>Follow:</h3>
-            <p>Paris is the capital of France.</p>
         </div>
 
 
     </div>
 </div>
+
+<form class="ChatContainer" method="post">
+    <div class="ChatViewer">
+        <?php
+        for($i=0;$i<count($ActiveChat);$i++){
+        ?>
+        <?php
+        if($ActiveChat[$i]['owner']==$_SESSION['username']){
+        ?>
+        <div class="MyMessage">
+            <p class ="MeUsername"><?php echo $_SESSION['username']?></p>
+            <?php echo $ActiveChat[$i]['text']?>
+        </div>
+        <?php }else{ ?>
+        <div class="OtherMessage">
+            <p class ="OtherUsername"><?php echo $ActiveChat[$i]['owner']?></p>
+            <?php echo $ActiveChat[$i]['text']?>
+        </div>
+        <?php
+        }
+        ?>
+        <?php
+        }
+
+        ?>
+    </div>
+    <input class="ChatInput" name="ChatInput">
+    <button class="ChatButton button" name="MessageSend">Send</button>
+    <div class="ChatList" >
+        <h2>Chat list</h2>
+        <?php
+        for($i=0;$i<count($ChatList);$i++){
+        if($ChatList[$i]["user1"]==$_SESSION['username']){
+         ?>
+        <div class="ChatListComponent"><?php echo $ChatList[$i]["user2"]; ?><button class="ChatButton button" name="ChatListButton" value="<?php echo $ChatList[$i]["id"]; ?>">Load</button></div>
+        <?php
+        } else {
+        ?>
+        <div class="ChatListComponent"><?php echo $ChatList[$i]["user1"]; ?><button class="ChatButton button" name="ChatListButton" value="<?php echo $ChatList[$i]["id"]; ?>">Load</button></div>
+        <?php
+        }
+        }
+        ?>
+    </div>
+</form>
 
 <!--===========================================MODAL WINDOW==================================================================-->
 

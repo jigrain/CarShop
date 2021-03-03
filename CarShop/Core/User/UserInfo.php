@@ -13,6 +13,9 @@ if(empty($_SESSION['userid'])) {
 
 
 }
-$userId = $_SESSION['userid'];
+$userId = $_GET["User"];
+$username = $_SESSION['username'];
 
+$ChatList = LoadChat($connect,$username);
+$ActiveChat = LoadMessage ($connect,$_SESSION["ChatId"]);
 $userInfo = UserSelectInfo($connect, $userId);

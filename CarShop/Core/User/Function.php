@@ -128,7 +128,7 @@ function loginUser($connect,$username,$pwd){
         session_start();
         $_SESSION["userid"] = $NameExists["userid"];
         $_SESSION["username"] = $NameExists["username"];
-        $_SESSION["user_type"] = $NameExists["user_type"];
+        $_SESSION["ChatId"] = 0;
         header("location: /MainPage.php");
 
     }
@@ -171,6 +171,47 @@ function СhangeAvatar ($connect,$path,$userId){
     mysqli_stmt_close($stmt);
     header("location: /Userpage.php");
     exit();
+
+}
+
+function LoadChat ($connect,$username){
+    $sql = "SELECT id,user1,user2  FROM chatsystem WHERE user1 = ? or user2 = ?";
+    $stmt = mysqli_stmt_init($connect);
+    mysqli_stmt_prepare($stmt,$sql);
+
+
+    mysqli_stmt_bind_param($stmt, "ss", $username,$username);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    return mysqli_fetch_all($resultData, MYSQLI_ASSOC);
+}
+
+function LoadMessage ($connect,$chatId){
+    $sql = "SELECT owner,text  FROM chatmessage WHERE ChatId = ? ";
+    $stmt = mysqli_stmt_init($connect);
+    mysqli_stmt_prepare($stmt,$sql);
+
+
+    mysqli_stmt_bind_param($stmt, "s", $chatId);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    return mysqli_fetch_all($resultData, MYSQLI_ASSOC);
+}
+
+function SendNewMessage($connect,$chatId,$text,$owner){
+    $sql = "INSERT INTO chatmessage (ChatId,owner,text ) VALUES (?,?,?)";
+    $stmt = mysqli_stmt_init($connect);
+    mysqli_stmt_prepare($stmt,$sql);
+
+    mysqli_stmt_bind_param($stmt, "iss", $chatId,$owner, $text);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header('/Userpage.php?User='.$_SESSION["userid"]);
+
 
 }
 

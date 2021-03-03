@@ -25,11 +25,15 @@
             <ul class="Button_List  ">
                 <?php
                 if(isset($_SESSION['userid'])) {
-                    echo '<li class = "Menu_Button"><a class = "Menu_Button_Text" href="http://CarShop/Userpage.php">Profile</a></li>';
-                    echo '<li class = "Menu_Button"><a class = "Menu_Button_Text" href="Core/User/Logout.php">Logout</a></li>';
+                ?>
+                    <li class = "Menu_Button"><a class = "Menu_Button_Text" href="<?php echo 'http://CarShop/Userpage.php?User='.$_SESSION['userid'] ;?>">Profile</a></li>
+                    <li class = "Menu_Button"><a class = "Menu_Button_Text" href="Core/User/Logout.php">Logout</a></li>
+                 <?php
                 }else if(empty($_SESSION['userid'])){
-                    echo '<li class = "Menu_Button"><a class = "Menu_Button_Text" href="http://CarShop/Login_form.php">Log In</a></li>';
-                    echo '<li class = "Menu_Button"><a class = "Menu_Button_Text" href="http://CarShop/Registration_form.php">Sign Up</a></li>';
+                ?>
+                     <li class = "Menu_Button"><a class = "Menu_Button_Text" href="http://CarShop/Login_form.php">Log In</a></li>
+                     <li class = "Menu_Button"><a class = "Menu_Button_Text" href="http://CarShop/Registration_form.php">Sign Up</a></li>
+                <?php
                 }
                 ?>
             </ul>

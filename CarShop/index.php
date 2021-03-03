@@ -20,11 +20,14 @@ if($router == '/MainPage' ){
 }elseif ($router == '/Contact') {
     include('Contact.php');
 
-}elseif ($router == '/Login_form' || preg_match('/Shop\/[0-9]/i',$router)) {
+}elseif ($router == '/Login_form' || preg_match('/Login_form\/[0-9]/i',$router)) {
     include('Login_form.php');
 
-}elseif ($router == '/Registration_form' || preg_match('/Shop\/[0-9]/i',$router)) {
+}elseif ($router == '/Registration_form' || preg_match('/Registration_form\/[0-9]/i',$router)) {
     include('Registration_form.php');
+
+}elseif ($router == '/Userpage.php' || preg_match('/Userpage\/[0-9]/i',$router)) {
+    include('Userpage.php');
 
 }else{
     include('MainPage.php');
